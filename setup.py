@@ -1,6 +1,6 @@
 import setuptools
 
-from freeproxy import __info__ as package_info
+from sslproxies import __info__ as package_info
 
 with open("README.md", "r") as fh:
     long_description = fh.read()

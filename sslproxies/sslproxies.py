@@ -5,7 +5,7 @@ from typing import Union, List
 import requests
 from bs4 import BeautifulSoup
 
-from freeproxy.classes.Proxy import Proxy
+from sslproxies.classes.Proxy import Proxy
 
 
 def _yes_no_to_bool(yes_or_no: str) -> bool:

@@ -1,7 +1,7 @@
 __version__ = '0.1.0'
 
-__title__ = "freeproxy"
-__github_project_name__ = "freeproxy"
+__title__ = "sslproxies"
+__github_project_name__ = "sslproxies"
 __author__ = 'Nate Harris'
 __author_email__ = 'n8gr8gbln@gmail.com'
 __github_username__ = "nwithan8"

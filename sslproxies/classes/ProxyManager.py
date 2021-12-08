@@ -1,6 +1,6 @@
 from typing import Union, List
 
-from freeproxy.fp import get_proxy_list, get_proxy, Proxy
+from sslproxies.sslproxies import get_proxy_list, get_proxy, Proxy
 
 
 class ProxyManager:

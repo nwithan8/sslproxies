@@ -1,14 +1,14 @@
-# Freeproxy
+# SSLProxies
 
 ## Get free working proxy from <https://www.sslproxies.org/> and use it in your script
 
 This is a port/rewrite of [free-proxy](https://github.com/jundymek/free-proxy) with additional features and validations.
 
-Freeproxy pulls a list of free proxies from [sslproxies.org](https://www.sslproxies.org/)
+SSLProxies pulls a list of free proxies from [sslproxies.org](https://www.sslproxies.org/)
 
 You can choose to select a random proxy, or select a specific proxy by a set of criteria.
 
-Freeproxy also features a ProxyManager that can be used to cache and reuse proxies, including managing their working
+SSLProxies also features a ProxyManager that can be used to cache and reuse proxies, including managing their working
 status.
 
 Proxies are returned as objects with the following properties:
@@ -18,7 +18,6 @@ Proxies are returned as objects with the following properties:
 - url: the full url of the proxy (this will always be HTTP regardless of the HTTPS status)
 - country: the country of the proxy
 - anonymity: the anonymity of the proxy
-- google: the google rating of the proxy
 - https: whether the proxy supports https
 - last_checked: the last time the proxy was checked
 - last_working: the last time the proxy was working
@@ -34,9 +33,7 @@ Proxies are returned as objects with the following properties:
 ### Installation
 
 ```python
-pip
-install
-freeproxy
+pip install sslproxies
 ```
 
 ### Usage with examples
@@ -44,7 +41,7 @@ freeproxy
 Get a random proxy:
 
 ```python
-from freeproxy import ProxyManager
+from sslproxies import ProxyManager
 
 proxy = ProxyManager().get_new_proxy()
 ```
@@ -52,15 +49,16 @@ proxy = ProxyManager().get_new_proxy()
 or
 
 ```python
-from freeproxy import get_proxy
+from sslproxies import get_proxy
 
 proxy = get_proxy()
 ```
 
 
 Mark a proxy as working:
+
 ```python
-from freeproxy import ProxyManager
+from sslproxies import ProxyManager
 
 proxy = ProxyManager().get_new_proxy()
 manager = ProxyManager()
@@ -71,7 +69,7 @@ manager.mark_proxy_as_working(proxy)
 ## Options
 
 ```python
-from freeproxy import get_proxy
+from sslproxies import get_proxy
 
 proxy = get_proxy(countries=['US'], anonymous=True)
 ```
