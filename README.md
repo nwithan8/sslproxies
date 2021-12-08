@@ -1,126 +1,122 @@
-# Free-proxy
+# Freeproxy
 
 ## Get free working proxy from <https://www.sslproxies.org/> and use it in your script
 
-FreeProxy class scrapes proxies from <https://www.sslproxies.org/> and checkes if proxy is working. There is posibility to  
-filter proxies by country and acceptable timeout. You can also randomize list of proxies from where script would get  
-first working proxy.
+This is a port/rewrite of [free-proxy](https://github.com/jundymek/free-proxy) with additional features and validations.
 
-You can use it in sending request through custom proxy, with selenium or wherever you want.
+Freeproxy pulls a list of free proxies from [sslproxies.org](https://www.sslproxies.org/)
 
-Returns proxy as string:
+You can choose to select a random proxy, or select a specific proxy by a set of criteria.
 
-```python
-'http://113.160.218.14:8888'
-```
+Freeproxy also features a ProxyManager that can be used to cache and reuse proxies, including managing their working
+status.
+
+Proxies are returned as objects with the following properties:
+
+- ip: the IP address of the proxy
+- port: the port of the proxy
+- url: the full url of the proxy (this will always be HTTP regardless of the HTTPS status)
+- country: the country of the proxy
+- anonymity: the anonymity of the proxy
+- google: the google rating of the proxy
+- https: whether the proxy supports https
+- last_checked: the last time the proxy was checked
+- last_working: the last time the proxy was working
+- is_working: whether the proxy is working
+- requests_dict: a pre-formatted dictionary object to be passed into a Requests library request
 
 ### Requirements
 
 - Python3
 - Request library
-- Lxml library
+- BeautifulSoup library
 
 ### Installation
 
 ```python
-pip install free-proxy
+pip
+install
+freeproxy
 ```
-
-[![asciicast](https://asciinema.org/a/Xolpn3eD2tyJl8Y8HE9zolgex.svg)](https://asciinema.org/a/Xolpn3eD2tyJl8Y8HE9zolgex)
 
 ### Usage with examples
 
-First import Free Proxy that way:
+Get a random proxy:
 
 ```python
-from fp.fp import FreeProxy
+from freeproxy import ProxyManager
+
+proxy = ProxyManager().get_new_proxy()
 ```
+
+or
+
+```python
+from freeproxy import get_proxy
+
+proxy = get_proxy()
+```
+
+
+Mark a proxy as working:
+```python
+from freeproxy import ProxyManager
+
+proxy = ProxyManager().get_new_proxy()
+manager = ProxyManager()
+manager.mark_proxy_as_working(proxy)
+```
+
 
 ## Options
 
-| Parameter  | Type      | Example      | Default value |
-| ---------- | --------- | ------------ | ------------- |
-| country_id | list      | ['US', 'BR'] | None          |
-| timeout    | float > 0 | 0.1          | 0.5           |
-| rand       | bool      | True         | False         |
-
-- **No parameters**  
-  Get first working proxy from <https://www.sslproxies.org/>
-
 ```python
-proxy = FreeProxy().get()
+from freeproxy import get_proxy
+
+proxy = get_proxy(countries=['US'], anonymous=True)
 ```
 
-- **`country_id` parameter**  
-  Get first working proxy from specified list of countries. If there is no valid proxy from specified list check all countries
+- **`countries` parameter**  
+  Get a proxy from a specified list of countries. If there is no countries specified, proxies from all countries will be considered. Default ``countries=None``.
 
 ```python
-proxy = FreeProxy(country_id=['US', 'BR']).get()
+proxy = get_proxy(countries=['US', 'BR', 'United States', 'Germany'])
+```
+
+- **`verify` parameter**  
+  Return only a proxy that works (keeps testing proxies until one works). Default `verify=False`.
+
+```python
+proxy = get_proxy(verify=True)
 ```
 
 - **`timeout` parameter**  
-  Timeout is parameter for checking if proxy is valid. If test site doesn't respond in specified time  
-  script marks this proxy as invalid. Default `timeout=0.5`. You can change it by defining  
-  specified timeout eg. `timeout=1`.
+  During verification, if test site doesn't respond in X number of seconds, the proxy is considered non-working. Default `timeout=0.5`.
 
 ```python
-proxy = FreeProxy(timeout=1).get()
+proxy = get_proxy(timeout=1)
 ```
 
 - **`rand` parameter**  
-  Shuffles proxy list from <https://www.sslproxies.org/>. Default `rand=False` and searches for working proxy from newest
-  to oldest (as they are listed in <https://www.sslproxies.org/>).
+  Pull a random proxy, rather than the first one on the list. Default `rand=True`.
 
 ```python
-proxy = FreeProxy(rand=True).get()
+proxy = get_proxy(rand=True)
 ```
 
-- **`anonym` parameter**  
-  Return only those proxies that are marked as anonymous. Defaults to `anonym=False`
+- **`anonymous` parameter**  
+  Return only those proxies that are marked as anonymous. Default `anonymous=False`.
 
 ```python
-proxy = FreeProxy(anonym=True).get()
+proxy = get_proxy(anonymous=True)
 ```
 
 You can combine parameters:
 
 ```python
-proxy = FreeProxy(country_id=['US', 'BR'], timeout=0.3, rand=True).get()
+proxy = get_proxy(country_id=['US', 'BR'], timeout=0.3, rand=True, verify=True)
 ```
 
-If there is no working proxy script returns `There are no working proxies at this time.` message.
+If there is no proxy matching all criteria, `get_proxy` returns `None`.
 
-## CHANGELOG
-
----
-
-## [1.0.4] - 2021-11-13
-
-- Fix proxy list default length
-
-## [1.0.3] - 2021-08-18
-
-- Change XPatch due to SSL proxies page update
-- Change lxml version
-
-## [1.0.2] - 2020-09-03
-
-- Added `anonym` parameter
-
-## [1.0.1] - 2020-03-19
-
-- Fix typos in readme
-- Fix urrlib3 exception `urllib3.exceptions.ProxySchemeUnknown: Not supported proxy scheme None`,
-- Fix imports
-
-## [1.0.0] - 2019-02-04
-
-- Initial release
-
-## License
-
----
-
-MIT
-
-**Free Software!**
+These same options are available in `get_new_proxy`, `get_non_working_proxy` and `get_cached_proxy` via the `ProxyManager`.
