@@ -1,5 +1,7 @@
 # SSLProxies
 
+### DEPRECATED: This repo started partially as a friendly competition between myself and [@Justintime50](https://github.com/Justintime50). Rather than largely duplicating his concepts in a slightly different implementation, I have decided to archive this repository. I defer to his [`proxlist`](https://github.com/Justintime50/proxlist) instead.
+
 ## Get free working proxy from <https://www.sslproxies.org/> and use it in your script
 
 This is a port/rewrite of [free-proxy](https://github.com/jundymek/free-proxy) with additional features and validations.
